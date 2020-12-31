@@ -1,56 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import { useSelector, useDispatch} from 'react-redux';
+import { selectTodos, deleteTodo } from './features/counter/todoSlice'
+import styled from 'styled-components';
+import Addtodo from './component/Addtodo';
+import Todo from './component/Todo';
+
+const TodoListWrapper = styled.div`
+  text-align: center;
+  background: rgba(255, 255, 0, 0.6);
+  width: 50vw;
+  margin: 0 auto;
+  border-radius: 50px;
+  padding: 20px 0px;
+`
 
 function App() {
+  const todos = useSelector(selectTodos)
+  const dispatch = useDispatch()
+
+  const handleDelete = id => {
+    dispatch(deleteTodo(id))
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <TodoListWrapper>
+        {todos.map(todo => (
+          <Todo key={todo.id} todo={todo} deleteTodo={handleDelete}/>
+        ))}
+        <Addtodo />
+      </TodoListWrapper>
     </div>
   );
 }
